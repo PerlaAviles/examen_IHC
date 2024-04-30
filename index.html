@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lover house </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   
+        <style>
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                z-index: 2;
+            }
+    
+            body {
+                margin-bottom: 100px;
+            }
+    
+            header {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+    
+            main {
+                margin-top: 70px;
+            }
+    
+            .card {
+                border: none;
+                /* Elimina los bordes */
+            }
+    
+            .card-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+    
+            #plano {
+                max-width: 100%;
+                height: auto;
+            }
+    
+    
+            #focoRecamara {
+                position: absolute;
+                width: 5%;
+                top: 30%;
+                height: auto;
+                left: 49%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #alarma {
+                position: absolute;
+                width: 5%;
+                top: 82%;
+                height: auto;
+                left: 45%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #focoSala {
+                position: absolute;
+                width: 5%;
+                top: 80%;
+                height: auto;
+                left: 20%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #ventilador {
+                position: absolute;
+                width: 5%;
+                top: 80%;
+                height: auto;
+                left: 52%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .focoJardin {
+                position: absolute;
+                width: 5%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .cortinas {
+                position: absolute;
+                width: 7%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .camaras {
+                position: absolute;
+                width: 5%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+            .white-text {
+            color: white;
+        }
+          
+        </style>
+
+    <header>
+        <nav class="navbar" style="background-color: #cf86a2;">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    
+                    <span class="fw-bold white-text">Bienvenido a Toto</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                        
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+</head>
+<body>
+    <br><br><br>
+ 
+  <p id="instructions">Para iniciar sesión, diga "Toto iniciar sesión".</p>
+
+  <p id="voice-output"></p>
+
+  <script>
+    // NIP predeterminado
+    const defaultPIN = "0607";
+
+    // Variable para almacenar si se ha iniciado sesión
+    let loggedIn = false;
+
+    // Función para iniciar la captura de voz
+    function startListening() {
+      const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+      recognition.lang = 'es-ES';
+      
+      recognition.onstart = function() {
+        document.getElementById("voice-output").innerText = "Escuchando...";
+      }
+
+      recognition.onresult = function(event) {
+        const voiceInput = event.results[0][0].transcript.toLowerCase();
+
+        // Verificar si se pronunció el comando para iniciar sesión
+        if (voiceInput.includes("toto iniciar sesión")) {
+          // Cambiar las instrucciones
+          document.getElementById("instructions").innerText = "Por favor, ingrese su NIP de 4 dígitos.";
+
+          // Cambiar el estado a "loggedIn"
+          loggedIn = true;
+        }
+
+        // Si se ha iniciado sesión, verificar el NIP ingresado
+        if (loggedIn) {
+  const pin = voiceInput.match(/\d{4}/);
+  if (pin) {
+    // Verificar si el NIP ingresado coincide con el predeterminado
+    if (pin[0] === defaultPIN) {
+      // Redireccionar a otro archivo HTML
+      window.location.href = "voz.html";
+    } else {
+      alert("NIP incorrecto. Por favor, intente nuevamente.");
+    }
+  } else {
+    alert("No se detectó un NIP de 4 dígitos. Por favor, intente nuevamente.");
+  }
+
+  // Reiniciar el estado de inicio de sesión
+  loggedIn = false;
+
+  // Reiniciar las instrucciones
+  document.getElementById("instructions").innerText = 'Para iniciar sesión, diga "Toto iniciar sesión y después diga su NIP".';
+}
+
+        // Reiniciar la captura de voz para que siga escuchando
+        startListening();
+      }
+
+      recognition.start();
+    }
+
+    // Iniciar la captura de voz automáticamente al cargar la página
+    window.onload = startListening;
+  </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lover house </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        #commands {
+            width: 400px;
+            height: 200px;
+            margin-bottom: 20px;
+
+        }
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                z-index: 2;
+            }
+    
+            body {
+                margin-bottom: 100px;
+            }
+    
+            header {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+    
+            main {
+                margin-top: 70px;
+            }
+    
+            .card {
+                border: none;
+                /* Elimina los bordes */
+            }
+    
+            .card-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+    
+            #plano {
+                max-width: 100%;
+                height: auto;
+            }
+    
+    
+            #focoRecamara {
+                position: absolute;
+                width: 5%;
+                top: 30%;
+                height: auto;
+                left: 49%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #alarma {
+                position: absolute;
+                width: 5%;
+                top: 82%;
+                height: auto;
+                left: 45%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #focoSala {
+                position: absolute;
+                width: 5%;
+                top: 80%;
+                height: auto;
+                left: 20%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            #ventilador {
+                position: absolute;
+                width: 5%;
+                top: 80%;
+                height: auto;
+                left: 52%;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .focoJardin {
+                position: absolute;
+                width: 5%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .cortinas {
+                position: absolute;
+                width: 7%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+    
+            .camaras {
+                position: absolute;
+                width: 5%;
+                height: auto;
+                z-index: 1;
+                transform: translate(-50%, -50%);
+            }
+            .white-text {
+            color: white;
+        }
+          
+    </style>
+
+<header>
+    <nav class="navbar" style="background-color: #cf86a2;">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                
+                <span class="fw-bold white-text">"Control por Voz"</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+</head>
+   
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <button id="startButton">Iniciar reconocimiento de voz</button>
+    <h2>Consultas posibles:</h2>
+    <textarea id="commands" readonly>
+- Enciende/apaga la luz de la recámara (1 foco)
+- Enciende/apaga la luz de la sala (1 foco)
+- Enciende/apaga las luces del jardín (5 focos)
+- Enciende/apaga el ventilador (1 ventilador de techo)
+- Abre/cierra las cortinas (3 cortinas)
+- Activa/desactiva la alarma de la casa (1 alarma con chicharra)
+- Enciende/apaga las cámaras de seguridad (3 cámaras de videovigilancia)
+    </textarea>
+
+    <script>
+        // Función para enviar datos a la API de MockAPI
+async function sendDataToAPI(data) {
+    try {
+        const response = await fetch('https://6630830dc92f351c03da0ee6.mockapi.io/examen', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const responseData = await response.json();
+        console.log('Data sent to API:', responseData);
+    } catch (error) {
+        console.error('Error sending data to API:', error);
+    }
+}
+
+// Funciones para ejecutar acciones basadas en comandos de voz
+function handleLightCommand(room, action) {
+    const command = `${action} la luz de la ${room}`;
+    console.log(command);
+    const data = {
+        Consulta: command,
+        fecha: new Date()
+    };
+    sendDataToAPI(data);
+}
+
+function handleFanCommand(action) {
+    const command = `${action} el ventilador`;
+    console.log(command);
+    const data = {
+        Consulta: command,
+        fecha: new Date()
+    };
+    sendDataToAPI(data);
+}
+
+function handleCurtainsCommand(action) {
+    const command = `${action} las cortinas`;
+    console.log(command);
+    const data = {
+        Consulta: command,
+        fecha: new Date()
+    };
+    sendDataToAPI(data);
+}
+
+function handleAlarmCommand(action) {
+    const command = `${action} la alarma de la casa`;
+    console.log(command);
+    const data = {
+        Consulta: command,
+        fecha: new Date()
+    };
+    sendDataToAPI(data);
+}
+
+function handleCamerasCommand(action) {
+    const command = `${action} las cámaras de seguridad`;
+    console.log(command);
+    const data = {
+        Consulta: command,
+        fecha: new Date()
+    };
+    sendDataToAPI(data);
+}
+
+// Reconocimiento de voz
+const recognition = new webkitSpeechRecognition();
+recognition.lang = 'es-ES';
+
+recognition.onresult = function(event) {
+    const speechResult = event.results[0][0].transcript.toLowerCase();
+    console.log('Speech recognition result:', speechResult);
+
+    if (speechResult.includes('luz') && speechResult.includes('recámara')) {
+        if (speechResult.includes('enciende')) {
+            handleLightCommand('recámara', 'Encender');
+        } else if (speechResult.includes('apaga')) {
+            handleLightCommand('recámara', 'Apagar');
+        }
+    } else if (speechResult.includes('luz') && speechResult.includes('sala')) {
+        if (speechResult.includes('enciende')) {
+            handleLightCommand('sala', 'Encender');
+        } else if (speechResult.includes('apaga')) {
+            handleLightCommand('sala', 'Apagar');
+        }
+    } else if (speechResult.includes('luces') && speechResult.includes('jardín')) {
+        if (speechResult.includes('enciende')) {
+            handleLightCommand('jardín', 'Encender');
+        } else if (speechResult.includes('apaga')) {
+            handleLightCommand('jardín', 'Apagar');
+        }
+    } else if (speechResult.includes('ventilador')) {
+        if (speechResult.includes('enciende')) {
+            handleFanCommand('Encender');
+        } else if (speechResult.includes('apaga')) {
+            handleFanCommand('Apagar');
+        }
+    } else if (speechResult.includes('cortinas')) {
+        if (speechResult.includes('abre')) {
+            handleCurtainsCommand('Abrir');
+        } else if (speechResult.includes('cierra')) {
+            handleCurtainsCommand('Cerrar');
+        }
+    } else if (speechResult.includes('alarma')) {
+        if (speechResult.includes('activa')) {
+            handleAlarmCommand('Activar');
+        } else if (speechResult.includes('desactiva')) {
+            handleAlarmCommand('Desactivar');
+        }
+    } else if (speechResult.includes('cámaras')) {
+        if (speechResult.includes('enciende')) {
+            handleCamerasCommand('Encender');
+        } else if (speechResult.includes('apaga')) {
+            handleCamerasCommand('Apagar');
+        }
+    }
+};
+
+// Iniciar el reconocimiento de voz cuando se presiona un botón o se inicia la página
+function startSpeechRecognition() {
+    recognition.start();
+}
+
+// Ejemplo de cómo se podría activar el reconocimiento de voz
+// Puedes vincular esta función a un botón o activarla de otra manera según tus necesidades
+startSpeechRecognition();
+
+
+
+    </script>
+</body>
+</html>
